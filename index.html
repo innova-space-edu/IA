@@ -1,0 +1,97 @@
+<!-- index.html actualizado con memoria conversacional -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Innova Space Education</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P64ZZSCZ7Z"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-P64ZZSCZ7Z');
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    /* (Estilos iguales al original omitidos por brevedad) */
+  </style>
+</head>
+<body class="bg-gradient-to-br from-black via-indigo-900 to-purple-900 text-white font-sans scroll-smooth">
+  <!-- (Contenido visual igual al original) -->
+
+  <script>
+    // Mecanismo de memoria contextual
+    let historial = [];
+    let temaActual = null;
+    let tiempoUltimaInteraccion = Date.now();
+    const LIMITE_TIEMPO = 10 * 60 * 1000;
+
+    function detectarTema(mensaje) {
+      const temas = {
+        "riesgo": "riesgos naturales",
+        "clima": "clima y medioambiente",
+        "salud": "salud y bienestar",
+        "inteligencia": "inteligencia artificial",
+        "robot": "tecnología y robótica",
+        "internet": "tecnología e información",
+        "planificación": "planificaciones escolares",
+        "profesor": "educación",
+        "satélite": "tecnología espacial"
+      };
+      mensaje = mensaje.toLowerCase();
+      return Object.keys(temas).find(p => mensaje.includes(p)) ? temas[Object.keys(temas).find(p => mensaje.includes(p))] : null;
+    }
+
+    function actualizarTema(mensaje) {
+      const nuevoTema = detectarTema(mensaje);
+      const ahora = Date.now();
+      if (nuevoTema) {
+        temaActual = nuevoTema;
+        tiempoUltimaInteraccion = ahora;
+      } else if (ahora - tiempoUltimaInteraccion > LIMITE_TIEMPO) {
+        temaActual = null;
+        historial = [];
+      }
+    }
+
+    function generarPrompt(mensaje) {
+      actualizarTema(mensaje);
+      const contexto = temaActual ? `Tema actual: ${temaActual}\n` : "";
+      const his = historial.slice(-5).map(m => `Usuario: ${m.u}\nMIRA: ${m.m}`).join("\n");
+      return `${contexto}${his}\nUsuario: ${mensaje}\nMIRA:`;
+    }
+
+    function agregarHistorial(u, m) {
+      historial.push({ u, m });
+      tiempoUltimaInteraccion = Date.now();
+    }
+
+    async function obtenerRespuestaIA(prompt) {
+      const API_KEY = "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";
+      const MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
+
+      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user", content: prompt }
+          ],
+          temperature: 0.7
+        })
+      });
+      const data = await response.json();
+      return data.choices?.[0]?.message?.content || "Lo siento, no encontré una respuesta.";
+    }
+  </script>
+  <script src="chat.js"></script>
+</body>
+</html>
