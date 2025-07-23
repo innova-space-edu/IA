@@ -1,34 +1,27 @@
-<svg width="110" height="110" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 300 300" width="220" height="220" xmlns="http://www.w3.org/2000/svg" id="mira-avatar">
+  <g id="blob-group">
+    <path id="blob" d="
+      M150,120 
+      C180,110 200,150 170,170 
+      C190,200 120,210 110,170 
+      C90,140 110,100 150,120
+    " fill="url(#grad)">
+      <animate attributeName="d" dur="3s" repeatCount="indefinite"
+        values="
+          M150,120 C180,110 200,150 170,170 C190,200 120,210 110,170 C90,140 110,100 150,120;
+          M150,130 C190,100 210,160 160,180 C180,210 130,210 100,170 C80,140 120,90 150,130;
+          M150,120 C180,110 200,150 170,170 C190,200 120,210 110,170 C90,140 110,100 150,120" />
+    </path>
+  </g>
+
   <defs>
-    <linearGradient id="rainbow" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ff3c3c">
-        <animate attributeName="stop-color" values="#ff3c3c;#ffbe30;#35e835;#359bff;#8f38f7;#ff3c3c" dur="6s" repeatCount="indefinite"/>
-      </stop>
-      <stop offset="50%" stop-color="#ffbe30">
-        <animate attributeName="stop-color" values="#ffbe30;#35e835;#359bff;#8f38f7;#ff3c3c;#ffbe30" dur="6s" repeatCount="indefinite"/>
-      </stop>
-      <stop offset="100%" stop-color="#35e835">
-        <animate attributeName="stop-color" values="#35e835;#359bff;#8f38f7;#ff3c3c;#ffbe30;#35e835" dur="6s" repeatCount="indefinite"/>
-      </stop>
+    <!-- Gradiente de colores vibrantes -->
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff9933" />
+      <stop offset="25%" stop-color="#ffff33" />
+      <stop offset="50%" stop-color="#66ff66" />
+      <stop offset="75%" stop-color="#33ffff" />
+      <stop offset="100%" stop-color="#ff66cc" />
     </linearGradient>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
   </defs>
-  <circle
-    cx="55"
-    cy="55"
-    r="44"
-    stroke="url(#rainbow)"
-    stroke-width="8"
-    fill="none"
-    filter="url(#glow)">
-    <animate attributeName="r" values="44;49;44" dur="1.4s" repeatCount="indefinite"/>
-    <animate attributeName="stroke-width" values="8;12;8" dur="1.4s" repeatCount="indefinite"/>
-    <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="1.4s" repeatCount="indefinite"/>
-  </circle>
 </svg>
